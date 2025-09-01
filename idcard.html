@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EthSign ID Card Maker</title>
+  <style>
+    :root { --bg1:#ffcc66; --bg2:#ff9933; --card:#12161c; --accent:#ff7a00; }
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: #000;
+      display:flex;align-items:center;justify-content:center;
+      min-height:100vh;margin:0;padding:20px;
+    }
+    .app{width:100%;max-width:420px;}
+    h1{text-align:center;color:#cc5200;margin:0 0 12px;font-size:20px;}
+    .form{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;align-items:center;}
+    input{width:100%;padding:10px;border-radius:8px;border:none;box-shadow:0 2px 6px rgba(0,0,0,.12);}
+    button{width:100%;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;}
+    .card{
+      margin-top:14px;
+      background:var(--card);
+      color:#fff;
+      border-radius:12px;
+      padding:18px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    .card .name{font-size:20px;color:var(--accent);margin-bottom:6px;font-weight:700;}
+    .card .handle{opacity:.9;margin-bottom:6px;}
+    .card .role{font-style:italic;opacity:.85;font-size:14px;}
+    .brand { font-size:12px;margin-top:10px;text-align:center;color:#000;opacity:.9;}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>🍊 EthSign Identity Card</h1>
+
+    <div class="form">
+      <input id="name" type="text" placeholder="Your name (e.g. Alice)" />
+      <input id="handle" type="text" placeholder="Handle (e.g. @ethsignfan)" />
+      <input id="role" type="text" placeholder="Role / Tagline (e.g. Web3 Builder)" />
+      <button onclick="generateCard()">Generate Card</button>
+    </div>
+
+    <div id="cardArea"></div>
+
+    <div class="brand">Made with ♥ for @ethsign • Lightweight HTML + JS</div>
+  </div>
+
+  <script>
+    function generateCard(){
+      const name = document.getElementById('name').value.trim() || 'Anonymous';
+      const handle = document.getElementById('handle').value.trim() || '@ethsign';
+      const role = document.getElementById('role').value.trim() || 'Web3 Explorer';
+
+      const html = `
+        <div class="card">
+          <div class="name">${escapeHtml(name)}</div>
+          <div class="handle">${escapeHtml(handle)}</div>
+          <div class="role">${escapeHtml(role)}</div>
+        </div>
+      `;
+      document.getElementById('cardArea').innerHTML = html;
+    }
+
+    // small sanitizer for text content
+    function escapeHtml(s){ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+  </script>
+</body>
+</html>
