@@ -1,72 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EthSign ID Card Maker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ethsign ID Card Maker</title>
   <style>
-    :root { --bg1:#ffcc66; --bg2:#ff9933; --card:#12161c; --accent:#ff7a00; }
-    body{
+    body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      color: #000;
-      display:flex;align-items:center;justify-content:center;
-      min-height:100vh;margin:0;padding:20px;
+      background: linear-gradient(135deg, #ffb347, #ff7a00);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
     }
-    .app{width:100%;max-width:420px;}
-    h1{text-align:center;color:#cc5200;margin:0 0 12px;font-size:20px;}
-    .form{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;align-items:center;}
-    input{width:100%;padding:10px;border-radius:8px;border:none;box-shadow:0 2px 6px rgba(0,0,0,.12);}
-    button{width:100%;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;}
-    .card{
-      margin-top:14px;
-      background:var(--card);
-      color:#fff;
-      border-radius:12px;
-      padding:18px;
-      text-align:center;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
     }
-    .card .name{font-size:20px;color:var(--accent);margin-bottom:6px;font-weight:700;}
-    .card .handle{opacity:.9;margin-bottom:6px;}
-    .card .role{font-style:italic;opacity:.85;font-size:14px;}
-    .brand { font-size:12px;margin-top:10px;text-align:center;color:#000;opacity:.9;}
+
+    form {
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background: #ff7a00;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #card {
+      display: none;
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    #card h2 {
+      margin: 10px 0;
+      color: #ff7a00;
+    }
+
+    #card p {
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+
+    #logo {
+      font-weight: bold;
+      color: #ff7a00;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="app">
-    <h1>🍊 EthSign Identity Card</h1>
+  <h1>@ethsign Identity Card Maker</h1>
 
-    <div class="form">
-      <input id="name" type="text" placeholder="Your name (e.g. Alice)" />
-      <input id="handle" type="text" placeholder="Handle (e.g. @ethsignfan)" />
-      <input id="role" type="text" placeholder="Role / Tagline (e.g. Web3 Builder)" />
-      <button onclick="generateCard()">Generate Card</button>
-    </div>
+  <form id="idForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" required>
 
-    <div id="cardArea"></div>
+    <label for="role">Role</label>
+    <input type="text" id="role" required>
 
-    <div class="brand">Made with ♥ for @ethsign • Lightweight HTML + JS</div>
+    <label for="idnum">ID Number</label>
+    <input type="text" id="idnum" required>
+
+    <button type="submit">Generate ID</button>
+  </form>
+
+  <div id="card">
+    <div id="logo">🪪 EthSign ID</div>
+    <h2 id="cardName"></h2>
+    <p><strong>Role:</strong> <span id="cardRole"></span></p>
+    <p><strong>ID:</strong> <span id="cardNum"></span></p>
   </div>
 
   <script>
-    function generateCard(){
-      const name = document.getElementById('name').value.trim() || 'Anonymous';
-      const handle = document.getElementById('handle').value.trim() || '@ethsign';
-      const role = document.getElementById('role').value.trim() || 'Web3 Explorer';
+    const form = document.getElementById('idForm');
+    const card = document.getElementById('card');
+    const cardName = document.getElementById('cardName');
+    const cardRole = document.getElementById('cardRole');
+    const cardNum = document.getElementById('cardNum');
 
-      const html = `
-        <div class="card">
-          <div class="name">${escapeHtml(name)}</div>
-          <div class="handle">${escapeHtml(handle)}</div>
-          <div class="role">${escapeHtml(role)}</div>
-        </div>
-      `;
-      document.getElementById('cardArea').innerHTML = html;
-    }
-
-    // small sanitizer for text content
-    function escapeHtml(s){ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      cardName.textContent = document.getElementById('name').value;
+      cardRole.textContent = document.getElementById('role').value;
+      cardNum.textContent = document.getElementById('idnum').value;
+      card.style.display = 'block';
+    });
   </script>
 </body>
 </html>
